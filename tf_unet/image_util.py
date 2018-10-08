@@ -64,6 +64,26 @@ class BaseDataProvider(object):
             labels[..., 1] = label
             labels[..., 0] = ~label
             return labels
+        elif self.n_class == 3:
+            nx = label.shape[1]
+            ny = label.shape[0]
+            labels = np.zeros((ny, nx, self.n_class), dtype=np.float32)
+            label1 = np.zeros((ny, nx), dtype=np.float32)
+            label2 = np.zeros((ny, nx), dtype=np.float32)
+            label3 = np.zeros((ny, nx), dtype=np.float32)
+            for i in range(nx):
+                for j in range(ny):
+                    if label[j,i] == 0:
+                        label1[j,i] = 1
+                    elif label[j,i] == 0:
+                        label2[j,i] = 1
+                    elif label[j,i] == 2:
+                        label3[j,i] = 1
+            labels[..., 0] = label1
+            labels[..., 1] = label2
+            labels[..., 2] = label3
+            return labels
+            
         
         return label
     
